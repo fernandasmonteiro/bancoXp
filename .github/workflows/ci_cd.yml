@@ -1,27 +1,29 @@
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
     branches:
-      - main  # Substitua 'main' pelo nome da sua branch principal, se for diferente
+      - main   # ou a branch que você deseja monitorar
 
 jobs:
   build:
-    runs-on: windows-2022
-
+    runs-on: windows-22
+    
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Set up Maven
+      run: |
+        sudo apt-get install -y maven
+        mvn --version
 
-      - name: Run unit tests
-        run: npm test
+    - name: Build with Maven
+      run: mvn clean install
 
-      # Adicione mais etapas conforme necessário, como construção do aplicativo e implantação
+    # Adicione etapas adicionais conforme necessário para testar e implantar seu projeto Java.
